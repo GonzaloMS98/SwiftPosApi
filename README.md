@@ -132,4 +132,22 @@ Swagger:
 GET /swagger
 GET /swagger/v1/swagger.json
 ```
+
+## Render
+
+El proyecto incluye `Dockerfile` para desplegar `SwiftPosApi` como Web Service en Render.
+
+Configuracion recomendada en Render:
+
+- Runtime: Docker.
+- Root directory: raiz de este repositorio `SwiftPosApi`.
+- Health check path: `/health`.
+- Variables de entorno:
+  - `DATABASE_URL`: connection string PostgreSQL en formato URI, por ejemplo Neon.
+  - `Jwt__Issuer`: issuer del token.
+  - `Jwt__Audience`: audience del token.
+  - `Jwt__SigningKey`: secreto fuerte de produccion.
+  - `Jwt__ExpirationMinutes`: minutos de expiracion.
+
+La API usa `PORT` automaticamente cuando Render lo define. Para la base de datos acepta `DATABASE_URL` en formato `postgresql://...` o `ConnectionStrings__DefaultConnection` en formato Npgsql.
 # SwiftPosApi

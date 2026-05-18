@@ -11,6 +11,12 @@ JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 var builder = WebApplication.CreateBuilder(args);
 var jwtSection = builder.Configuration.GetSection(JwtOptions.SectionName);
+var renderPort = Environment.GetEnvironmentVariable("PORT");
+
+if (!string.IsNullOrWhiteSpace(renderPort))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{renderPort}");
+}
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -46,7 +52,10 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<PasswordHasher>();
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<CurrentUserContext>();
-builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddInfrastructure(
+    Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+    ?? Environment.GetEnvironmentVariable("DATABASE_URL")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
