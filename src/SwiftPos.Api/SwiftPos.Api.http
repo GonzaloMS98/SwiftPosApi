@@ -1,0 +1,11 @@
+@SwiftPos.Api_HostAddress = http://localhost:5022
+
+GET {{SwiftPos.Api_HostAddress}}/health
+Accept: application/json
+
+###
+
+GET {{SwiftPos.Api_HostAddress}}/modules
+Accept: application/json
+
+###
